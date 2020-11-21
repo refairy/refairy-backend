@@ -1,0 +1,32 @@
+{
+  "name": "refairy-backend",
+  "version": "1.0.0",
+  "description": "오늘도 여러분이 대한민국을 지킵니다, Refairy의 웹 백엔드입니다.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node -r tsconfig-paths/register ./src",
+    "watch": "tsnd --respawn  -r tsconfig-paths/register ./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/refairy/refairy-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/refairy/refairy-backend/issues"
+  },
+  "homepage": "https://github.com/refairy/refairy-backend#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "ts-node": "^9.0.0",
+    "ts-node-dev": "^1.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.1.2"
+  }
+}
