@@ -1,4 +1,4 @@
-import {Request, Response} from 'express'
+import { Request, Response } from 'express'
 import reportModel from '../models/report'
 
 const getReportById = async (req: Request<{
