@@ -22,7 +22,7 @@ const analyzePage = async (req: Request<{
         const newReport = new reportModel()
         console.log(fetched)
         newReport.uri = uri
-        newReport.set('analysisResult', [fetched])
+        newReport.set('analysisResult', fetched)
         console.log(newReport.toObject())
         console.log(await newReport.save())
         res.send({
