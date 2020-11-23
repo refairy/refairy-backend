@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { Error } from 'mongoose'
 import reportModel from '../models/report'
 
 const getReportById = async (req: Request<{
@@ -10,9 +11,11 @@ const getReportById = async (req: Request<{
         if(!report) throw new Error(`Cannot find report "${id}"`)
         res.send(report)
     } catch(e) {
+        console.log(e.name)
         res.status(400).send({
             status: 400,
-            message: e.message
+            message: e.message,
+            errorType: 'ERROR_REP_NOTFOUND'
         })
     }
 }

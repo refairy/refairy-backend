@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { Error } from 'mongoose'
 import fetch from 'node-fetch'
 import reportModel from '../models/report'
 import getEnv from '../utils/getEnv'
@@ -29,9 +30,15 @@ const analyzePage = async (req: Request<{
             result: fetched
         })
     } catch(e) {
-        res.status(400).send({
-            status: 400,
-            message: e.message
+
+        const [status, message, errorType] = ({
+            [Error.ValidationError.name]: [500, 'Internal server error', 'ERROR_DB_VALIDATE']
+        })[e.name] || [400, e.message, e.name]
+        
+        res.status(+status).send({
+            status,
+            message,
+            errorType
         })
     }
 }
