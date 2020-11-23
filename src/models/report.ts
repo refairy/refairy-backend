@@ -1,6 +1,5 @@
-import { ObjectId } from 'mongodb';
 import {
-  createSchema, ExtractDoc, Type, typedModel,
+  createSchema, Type, typedModel,
 } from 'ts-mongoose';
 
 const REQUIRED = {
@@ -9,6 +8,10 @@ const REQUIRED = {
 
 const reportSchema = createSchema({
     uri: Type.string({
+        trim: true,
+        ...REQUIRED
+    }),
+    title: Type.string({
         trim: true,
         ...REQUIRED
     }),

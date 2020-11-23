@@ -22,10 +22,12 @@
   "dependencies": {
     "@types/mongoose": "^5.10.1",
     "@types/node-fetch": "^2.5.7",
+    "@types/open-graph-scraper": "^4.3.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.10.15",
     "node-fetch": "^2.6.1",
+    "open-graph-scraper": "^4.7.0",
     "ts-mongoose": "^0.0.21"
   },
   "devDependencies": {

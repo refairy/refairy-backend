@@ -20,4 +20,10 @@ const getReportById = async (req: Request<{
     }
 }
 
+export const getRecentReport = async (req: Request<{
+    id: string
+}>, res: Response) => {
+    // Mongoose에서  최근 추가된 10개의 문서를 받아오는 코드..?
+}
+
 export default getReportById
