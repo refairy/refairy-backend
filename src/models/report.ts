@@ -17,7 +17,7 @@ const reportSchema = createSchema({
         is_wrong: Type.boolean(REQUIRED),
         corrected: Type.string(REQUIRED),
         confidence: Type.number(REQUIRED),
-        catetory: Type.string({
+        category: Type.string({
             enum: ['dokdo'],
             ...REQUIRED
         })

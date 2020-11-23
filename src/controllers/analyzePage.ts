@@ -9,16 +9,22 @@ const analyzePage = async (req: Request<{
     uri: string
 }>, res: Response) => {
     try {
-        const {uri} = req.params
-        const fetched = await (await fetch(MODEL_URI, {
+        const { uri } = req.params
+        const fetched = await (await fetch(MODEL_URI + '/check', {
             method: 'POST',
             body: JSON.stringify({
-                uri
-            })
+                "sentence": "네?"
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
         })).json()
         const newReport = new reportModel()
+        console.log(fetched)
         newReport.uri = uri
-        newReport.analysisResult = fetched
+        newReport.set('analysisResult', [fetched])
+        console.log(newReport.toObject())
+        console.log(await newReport.save())
         res.send({
             result: fetched
         })
