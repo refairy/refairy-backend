@@ -2,8 +2,12 @@ import {
   createSchema, Type, typedModel,
 } from 'ts-mongoose';
 
-const REQUIRED = {
+export const REQUIRED = {
     required: true
+}
+
+export enum CATEGORY {
+    'dokdo'
 }
 
 const reportSchema = createSchema({
@@ -21,7 +25,7 @@ const reportSchema = createSchema({
         corrected: Type.string(REQUIRED),
         confidence: Type.number(REQUIRED),
         category: Type.string({
-            enum: ['dokdo'],
+            enum: Object.keys(CATEGORY),
             ...REQUIRED
         })
     })
