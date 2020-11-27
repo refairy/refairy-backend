@@ -39,7 +39,8 @@ export const getRecentReports = async (req: Request<unknown, unknown, unknown, {
             errorAmount: {
                 $size: "$analysisResult"
             },
-            title: 1
+            title: 1,
+            updatedAt: 1
         }
     }, {
         $sort: {
