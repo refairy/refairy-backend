@@ -12,7 +12,10 @@ const getReportById = async (req: Request<{
 
         const history = (await reportModel.find({
             uri: report.uri
-        })).map(e => e.analysisResult?.length)
+        })).map(e => ({
+            amount: e.analysisResult?.length,
+            date: report.updatedAt
+        }))
 
         res.send({
             ...(report.toObject()),
@@ -31,14 +34,20 @@ const getReportById = async (req: Request<{
 export const getRecentReports = async (req: Request<unknown, unknown, unknown, {
     limit?: number
 }>, res: Response) => {
-    const recentReports = (await reportModel.find({}, {
-        analysisResult: false
+    const recentReports = await reportModel.aggregate([{
+        $project: {
+            errorAmount: {
+                $size: "$analysisResult"
+            },
+            title: 1
+        }
     }, {
-        sort: {
-            createdAt: 'desc'
-        },
-        limit: +(req.query.limit || 4)
-    }).exec())
+        $sort: {
+            createdAt: 1
+        }
+    }, {
+        $limit: +(req.query.limit || 4)
+    }]).exec()
     res.send(recentReports)
 }
 
