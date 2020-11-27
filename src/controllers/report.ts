@@ -20,9 +20,7 @@ const getReportById = async (req: Request<{
     }
 }
 
-export const getRecentReports = async (req: Request<{
-    id: string
-}>, res: Response) => {
+export const getRecentReports = async (req: Request, res: Response) => {
     const recentReports = (await reportModel.find({}, {
         analysisResult: false
     }, {

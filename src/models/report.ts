@@ -21,7 +21,6 @@ const reportSchema = createSchema({
     }),
     analysisResult: Type.array(REQUIRED).of({
         origin: Type.string(REQUIRED),
-        is_wrong: Type.boolean(REQUIRED),
         corrected: Type.string(REQUIRED),
         confidence: Type.number(REQUIRED),
         category: Type.string({
