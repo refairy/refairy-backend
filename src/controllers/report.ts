@@ -45,7 +45,7 @@ export const getRecentReports = async (req: Request<unknown, unknown, unknown, {
         }
     }, {
         $sort: {
-            createdAt: 1
+            updatedAt: -1
         }
     }, {
         $limit: +(req.query.limit || 4)
