@@ -20,14 +20,16 @@ const getReportById = async (req: Request<{
     }
 }
 
-export const getRecentReports = async (req: Request, res: Response) => {
+export const getRecentReports = async (req: Request<unknown, unknown, unknown, {
+    limit?: number
+}>, res: Response) => {
     const recentReports = (await reportModel.find({}, {
         analysisResult: false
     }, {
         sort: {
             createdAt: 'desc'
         },
-        limit: 8
+        limit: +(req.query.limit || 4)
     }).exec())
     res.send(recentReports)
 }
