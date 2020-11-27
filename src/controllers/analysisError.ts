@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
+import { isValidObjectId } from "mongoose";
 import analysisErrorModel, { UserContributionSelection } from "../models/analysisError";
-import { CATEGORY } from "../models/report";
 
 export const registerAnalysisError = (req: Request<unknown, unknown, {
     texts?: string[]
@@ -27,24 +27,50 @@ export const registerAnalysisError = (req: Request<unknown, unknown, {
     }
 }
 
-export const getContributionQuestions = async (req: Request, res: Response) => {
-    // WIP
-    // console.log(await analysisErrorModel.find({}, {}, {
+export const addUserContribution = async(req: Request<{
+    id: string
+}, unknown, {
+    evaluate?: keyof typeof UserContributionSelection
+}>, res: Response) => {
+    try {
+        const {body: {evaluate}, params: {id}} = req
+        if(!isValidObjectId(id)) throw new Error(`"${id}" is not valid errorid`)
+        if(!evaluate || !Object.keys(UserContributionSelection).includes(evaluate)) throw new Error(`""${evaluate}" is not valid selection`)
 
-    // }).exec())
-    console.log(await analysisErrorModel.aggregate([{
-        $project: {
-            length: {
-                $size: "$userContribution"
-            },
-            text: 1
-        }
-    }, {
-        $sort: {
-            length: 1
-        }
-    }, {
-        $limit: 6
-    }]).exec())
-    res.send('네?')
+        const analysisError = await analysisErrorModel.findById(id)
+        if(!analysisError) throw new Error(`"${id}" analysisError not found`)
+        analysisError.set('userContribution', [...(analysisError?.userContribution || []), evaluate])
+        analysisError.save()
+        res.send({
+            message: 'Successfully added',
+            result: analysisError
+        })
+    } catch(e) {
+        res.status(400).send({
+            message: e.message
+        })
+    }
+}
+
+export const getContributionQuestions = async (req: Request, res: Response) => {
+    try {
+        res.send(await analysisErrorModel.aggregate([{
+            $project: {
+                length: {
+                    $size: "$userContribution"
+                },
+                text: 1
+            }
+        }, {
+            $sort: {
+                length: 1
+            }
+        }, {
+            $limit: 6
+        }]).exec())
+    } catch(e) {
+        res.status(500).send({
+            message: 'Cannot find analysisErrors'
+        })
+    }
 }
