@@ -7,9 +7,17 @@ const getReportById = async (req: Request<{
 }>, res: Response) => {
     const {id} = req.params
     try {
-        const report = await reportModel.findById(id)
+        const report = await reportModel.findById(id);
         if(!report) throw new Error(`Cannot find report "${id}"`)
-        res.send(report)
+
+        const history = (await reportModel.find({
+            uri: report.uri
+        })).map(e => e.analysisResult?.length)
+
+        res.send({
+            ...(report.toObject()),
+            history
+        })
     } catch(e) {
         console.log(e.name)
         res.status(400).send({
