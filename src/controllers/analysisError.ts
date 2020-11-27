@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import analysisErrorModel from "../models/analysisError";
+import analysisErrorModel, { UserContributionSelection } from "../models/analysisError";
 import { CATEGORY } from "../models/report";
 
 export const registerAnalysisError = (req: Request<unknown, unknown, {
@@ -25,4 +25,26 @@ export const registerAnalysisError = (req: Request<unknown, unknown, {
             message: e.message
         })
     }
+}
+
+export const getContributionQuestions = async (req: Request, res: Response) => {
+    // WIP
+    // console.log(await analysisErrorModel.find({}, {}, {
+
+    // }).exec())
+    console.log(await analysisErrorModel.aggregate([{
+        $project: {
+            length: {
+                $size: "$userContribution"
+            },
+            text: 1
+        }
+    }, {
+        $sort: {
+            length: 1
+        }
+    }, {
+        $limit: 6
+    }]).exec())
+    res.send('네?')
 }
