@@ -62,6 +62,15 @@ export const getProgress = async (req: Request<{
     try {
         const report = await reportModel.findById(req.params.id)
         if(!report) throw new Error(`Cannot find report ${req.params.id}`)
+        const objectedReport = report.toObject()
+        if(report.isDone) {
+            return res.send({
+                sentences: objectedReport.analysisResult,
+                progress: undefined,
+                isDone: true
+            })
+        }
+        
         const fetched: {
             sentences: {
                 origin: string;
@@ -71,7 +80,8 @@ export const getProgress = async (req: Request<{
             progress: number;
             isDone: boolean;
         } = await (await fetch(MODEL_URI + '/check/progress?id=' + report.modelReqId)).json()
-        report.set('analysisResult', [...(report?.analysisResult || []), ...fetched.sentences])
+
+        report.set('analysisResult', fetched.sentences)
         report.set('isDone', fetched.isDone)
         report.save()
         res.send(fetched)
