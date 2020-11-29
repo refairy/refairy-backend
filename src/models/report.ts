@@ -7,7 +7,7 @@ export const REQUIRED = {
 }
 
 export enum CATEGORY {
-    'dokdo'
+    "dokdo", "east_sea", "holiday", "old_history", "japanese_colonial_period"
 }
 
 const reportSchema = createSchema({
@@ -22,7 +22,6 @@ const reportSchema = createSchema({
     analysisResult: Type.array(REQUIRED).of({
         origin: Type.string(REQUIRED),
         corrected: Type.string(REQUIRED),
-        confidence: Type.number(REQUIRED),
         category: Type.string({
             enum: Object.keys(CATEGORY),
             ...REQUIRED

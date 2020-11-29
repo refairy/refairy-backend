@@ -66,7 +66,6 @@ export const getProgress = async (req: Request<{
             sentences: {
                 origin: string;
                 corrected: string;
-                confidence: number;
                 category: CATEGORY
             }[];
             progress: number;
