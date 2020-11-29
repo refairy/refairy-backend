@@ -74,6 +74,7 @@ export const getProgress = async (req: Request<{
         } = await (await fetch(MODEL_URI + '/check/progress?id=' + report.modelReqId)).json()
         report.set('analysisResult', [...(report?.analysisResult || []), ...fetched.sentences])
         report.set('isDone', fetched.isDone)
+        report.save()
         res.send(fetched)
     } catch(e) {
         res.status(400).send({
