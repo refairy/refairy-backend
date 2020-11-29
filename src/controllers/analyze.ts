@@ -59,8 +59,8 @@ const analyzePage = async (req: Request<unknown, unknown, {
 export const getProgress = async (req: Request<{
     id: string
 }>, res: Response) => {
+    const report = await reportModel.findById(req.params.id)
     try {
-        const report = await reportModel.findById(req.params.id)
         if(!report) throw new Error(`Cannot find report ${req.params.id}`)
         const objectedReport = report.toObject()
         if(report.isDone) {
@@ -70,7 +70,7 @@ export const getProgress = async (req: Request<{
                 isDone: true
             })
         }
-        
+
         const fetched: {
             sentences: {
                 origin: string;
@@ -86,6 +86,15 @@ export const getProgress = async (req: Request<{
         report.save()
         res.send(fetched)
     } catch(e) {
+        if(e.name == 'FetchError' && report) {
+            report.set('isDone', true)
+            report.save()
+            res.send({
+                sentences: report.analysisResult,
+                progress: undefined,
+                isDone: true
+            })
+        }
         res.status(400).send({
             message: e.message
         })
