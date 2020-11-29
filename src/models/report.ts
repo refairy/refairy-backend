@@ -27,7 +27,9 @@ const reportSchema = createSchema({
             enum: Object.keys(CATEGORY),
             ...REQUIRED
         })
-    })
+    }),
+    isDone: Type.boolean(REQUIRED),
+    modelReqId: Type.string()
 }, {
     timestamps: true,
     _id: true
